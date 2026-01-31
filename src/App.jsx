@@ -7,6 +7,7 @@ import Properties from "./pages/Properties";
 import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 function AppRoutes() {
   const location = useLocation();
@@ -26,6 +27,9 @@ function AppRoutes() {
       </Routes>
 
       {!hideChrome && <Footer />}
+
+      {/* WhatsApp floating button (hidden on admin) */}
+      {!hideChrome && <WhatsAppButton />}
     </>
   );
 }
@@ -34,6 +38,10 @@ function App() {
   return (
     <BrowserRouter>
       <AppRoutes />
+      {/* show WhatsApp when not in admin - AppRoutes handles hiding chrome, but we can rely on location as well */}
+      <Routes>
+        <Route path="*" element={<WhatsAppButton />} />
+      </Routes>
     </BrowserRouter>
   );
 }

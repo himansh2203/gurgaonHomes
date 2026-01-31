@@ -1,4 +1,7 @@
 .properties-page{ padding:28px 0; }
 .properties-header{ display:flex; flex-direction:column; gap:6px; margin-bottom:18px; }
-.properties-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px; }
+.properties-grid{ 
+  display:grid; 
+  /* grid-template-columns:repeat(auto-fill,minmax(240px,1fr));  */
+  gap:18px; }
 .muted{ color:#6b7280; }

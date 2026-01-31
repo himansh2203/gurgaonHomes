@@ -1,18 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/Contact.css";
 
-const handleSubmit = (e) => {
-  e.preventDefault(); // page reload rokhne ke liye
-  alert("Your form has been submitted!");
-
-  // Formsubmit.co pe form submit karna
-  e.target.submit();
-
-  // Redirect to another website after submission
-  window.location.href = "https://gurgaonHomes.vercel.app/"; // replace with your desired URL
-};
-
 export default function Contact() {
+  useEffect(() => {
+    const prev = document.title;
+    document.title = "Contact — Gurgaon Homes";
+
+    let meta = document.querySelector("meta[name=description]");
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+
+    meta.content =
+      "Contact Gurgaon Homes for property enquiries, visits and support. We're here to help you find your perfect home in Gurgaon.";
+
+    return () => (document.title = prev);
+  }, []);
+
   return (
     <main className="ct-root">
       {/* HERO SECTION */}
@@ -26,22 +32,32 @@ export default function Contact() {
 
       {/* CONTACT WRAPPER */}
       <section className="ct-container">
+        {/* FORM CARD */}
         <div className="ct-card ct-form-card">
           <h2 className="ct-form-title">Send us a Message</h2>
 
-          {/* CONTACT FORM */}
           <form
             className="ct-form"
             action="https://formsubmit.co/333himansusingh@gmail.com"
             method="POST"
-            onSubmit={handleSubmit}
           >
+            {/* Redirect after submit */}
+            <input
+              type="hidden"
+              name="_next"
+              value="https://gurgaonhomes.vercel.app/"
+            />
+            {/* Disable captcha */}
+            <input type="hidden" name="_captcha" value="false" />
+
             <div className="ct-group">
               <label className="ct-label">Full Name</label>
               <input
                 type="text"
+                name="name"
                 className="ct-input"
                 placeholder="Enter your name"
+                required
               />
             </div>
 
@@ -49,8 +65,10 @@ export default function Contact() {
               <label className="ct-label">Email Address</label>
               <input
                 type="email"
+                name="email"
                 className="ct-input"
                 placeholder="your@email.com"
+                required
               />
             </div>
 
@@ -58,6 +76,7 @@ export default function Contact() {
               <label className="ct-label">Phone Number</label>
               <input
                 type="tel"
+                name="phone"
                 className="ct-input"
                 placeholder="+91 98765 43210"
               />
@@ -66,9 +85,11 @@ export default function Contact() {
             <div className="ct-group">
               <label className="ct-label">Message</label>
               <textarea
+                name="message"
                 className="ct-textarea"
                 rows="5"
                 placeholder="Write your message here..."
+                required
               ></textarea>
             </div>
 
@@ -95,7 +116,7 @@ export default function Contact() {
           <div className="ct-info-item">
             <span className="ct-info-heading">Address:</span>
             <p className="ct-info-text">
-              wz-56 Sharbati complex Jwaha Heri, New Delhi, India ,110056
+              WZ-56 Sharbati Complex, Jwalaheri, New Delhi, India 110056
             </p>
           </div>
 
@@ -106,6 +127,7 @@ export default function Contact() {
               allowFullScreen=""
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              title="Google Map"
             ></iframe>
           </div>
         </div>

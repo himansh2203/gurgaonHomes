@@ -1,8 +1,10 @@
-.contact-page{ padding:28px 0; }
-.contact-form{ display:flex; flex-direction:column; gap:12px; max-width:560px; }
+.contact-page{ padding:48px 0; background: linear-gradient(180deg, rgba(11,91,255,0.04), rgba(11,91,255,0.02)); }
+.contact-form{ display:flex; flex-direction:column; gap:12px; max-width:560px; background: #fff; padding:20px; border-radius:12px; box-shadow:0 10px 30px rgba(11,91,255,0.04); }
 .contact-form label{ display:flex; flex-direction:column; font-weight:600; color:#374151; }
 .contact-form input, .contact-form textarea{ margin-top:8px; padding:10px 12px; border-radius:8px; border:1px solid #e6e9ef }
-.success{ padding:16px; background:#ecfdf5; border-radius:8px; color:#065f46 }
+.contact-page h1{ color:var(--accent); }
+.gh-btn, .contact-form button{ background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color:#fff; border-radius:10px; padding:0.85rem 1rem; border:none; cursor:pointer; font-weight:700; }
+.success{ padding:16px; background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-radius:8px; color:#065f46 }
 
 .contact-page {
   max-width: 1200px;
@@ -108,16 +110,12 @@
 /* ======================== CONTACT PAGE ======================== */
 
 .ct-root {
-  /* --ct-accent: #ff4d6d;
-  --ct-accent2: #ff758c;
-  --ct-bg1: #ffe0e8;
-  --ct-bg2: #d7faff; */
-  --ct-accent:   color: #f6b100;;
-  --ct-accent2: color: #ffdc7d;;
-  --ct-bg1: #fff5e6;
-  --ct-bg2: #e6f7ff;
+  --ct-accent: var(--gold);
+  --ct-accent2: #f0d28a;
+  --ct-bg1: #fffaf0;
+  --ct-bg2: #f7fbff;
 
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
   background: linear-gradient(145deg, var(--ct-bg1), var(--ct-bg2));
   padding: 40px 24px;
   color: #112233;

@@ -6,6 +6,8 @@ import "../styles/PropertyDetail.css";
 
 export default function PropertyDetail() {
   const { id } = useParams();
+  // Route uses "/properties/:id" where id can be "<id>-<slug>". Use only the id portion for API calls.
+  const propertyId = id ? id.split("-")[0] : id;
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,26 +15,45 @@ export default function PropertyDetail() {
 
   useEffect(() => {
     setLoading(true);
+
+    // Primary attempt: fetch by id
     propertyService
-      .getPropertyById(id)
+      .getPropertyById(propertyId)
       .then((res) => {
         setProperty(res.data);
         setLoading(false);
       })
       .catch((err) => {
-        console.error(err);
-        setError("Failed to load property");
-        setLoading(false);
+        // Fallback: try fetching list and find matching property by id or slug
+        console.warn("getPropertyById failed, falling back to list:", err);
+        propertyService
+          .getProperties()
+          .then((r) => {
+            const found = (r.data || []).find(
+              (p) =>
+                (p._id || p.id || "").toString() === propertyId ||
+                (p.slug || "").includes(propertyId),
+            );
+            if (found) {
+              setProperty(found);
+              setError(null);
+            } else {
+              setError("Property not found");
+            }
+            setLoading(false);
+          })
+          .catch((e) => {
+            console.error(e);
+            setError("Failed to load property");
+            setLoading(false);
+          });
       });
 
     const socket = io(SERVER_ORIGIN);
     const handler = (payload) => {
-      if (
-        payload?.propertyId &&
-        payload.propertyId.toString() === (id.split("-")[0] || id)
-      ) {
+      if (payload?.propertyId && payload.propertyId.toString() === propertyId) {
         propertyService
-          .getPropertyById(id)
+          .getPropertyById(propertyId)
           .then((r) => setProperty(r.data))
           .catch(() => {});
       }
@@ -40,7 +61,101 @@ export default function PropertyDetail() {
     socket.on("propertiesUpdated", handler);
 
     return () => socket.disconnect();
-  }, [id]);
+  }, [propertyId]);
+
+  // SEO: update title & meta when property is loaded
+  useEffect(() => {
+    if (!property) return;
+    const prevTitle = document.title;
+    const prevDesc =
+      document
+        .querySelector("meta[name=description]")
+        ?.getAttribute("content") || null;
+
+    document.title = `${property.title} — Gurgaon Homes`;
+    let meta = document.querySelector("meta[name=description]");
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.content = (
+      property.description || "Premium property listing in Gurgaon."
+    ).slice(0, 160);
+
+    // Open Graph
+    const ogTitle =
+      document.querySelector("meta[property='og:title']") ||
+      (function () {
+        const m = document.createElement("meta");
+        m.setAttribute("property", "og:title");
+        document.head.appendChild(m);
+        return m;
+      })();
+    ogTitle.content = property.title;
+    const ogDesc =
+      document.querySelector("meta[property='og:description']") ||
+      (function () {
+        const m = document.createElement("meta");
+        m.setAttribute("property", "og:description");
+        document.head.appendChild(m);
+        return m;
+      })();
+    ogDesc.content = (property.description || "").slice(0, 160);
+
+    const ogImage =
+      document.querySelector("meta[property='og:image']") ||
+      (function () {
+        const m = document.createElement("meta");
+        m.setAttribute("property", "og:image");
+        document.head.appendChild(m);
+        return m;
+      })();
+    ogImage.content =
+      property.images && property.images[0]
+        ? property.images[0].startsWith("http")
+          ? property.images[0]
+          : `${SERVER_ORIGIN}${property.images[0]}`
+        : `https://source.unsplash.com/1200x800/?property`;
+
+    // JSON-LD structured data for a real estate listing (basic)
+    const jsonLdId = "gh-property-jsonld";
+    let existing = document.getElementById(jsonLdId);
+    if (existing) existing.remove();
+    const script = document.createElement("script");
+    script.id = jsonLdId;
+    script.type = "application/ld+json";
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Place",
+      name: property.title,
+      description: (property.description || "").slice(0, 300),
+      image: ogImage.content,
+      geo: { "@type": "GeoCoordinates", address: property.location || "" },
+    });
+    document.head.appendChild(script);
+
+    // canonical link for SEO
+    let canonical = document.querySelector("link[rel=canonical]");
+    const prevCanonical = canonical ? canonical.href : null;
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = window.location.href;
+
+    return () => {
+      document.title = prevTitle;
+      if (prevDesc !== null)
+        document.querySelector("meta[name=description]").content = prevDesc;
+      // remove JSON-LD
+      const e = document.getElementById(jsonLdId);
+      if (e) e.remove();
+      // restore canonical
+      if (prevCanonical) canonical.href = prevCanonical;
+    };
+  }, [property]);
 
   if (loading) return <div className="loading">Loading property...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -62,7 +177,7 @@ export default function PropertyDetail() {
   const submitEnquiry = async (e) => {
     e.preventDefault();
     try {
-      await propertyService.createEnquiry(id.split("-")[0], enquiry);
+      await propertyService.createEnquiry(propertyId, enquiry);
       alert("✅ Enquiry submitted");
       setEnquiry({ name: "", email: "", message: "" });
     } catch (err) {
@@ -85,6 +200,7 @@ export default function PropertyDetail() {
                 key={i}
                 src={imageUrl(img)}
                 alt={`${property.title} ${i}`}
+                loading="lazy"
                 onError={(e) => (e.target.src = fallback)}
               />
             ))
@@ -92,6 +208,7 @@ export default function PropertyDetail() {
             <img
               src={fallback}
               alt="placeholder"
+              loading="lazy"
               onError={(e) => (e.target.src = fallback)}
             />
           )}

@@ -52,6 +52,7 @@ export default function PropertyCard({ property }) {
         <img
           src={getImageSrc()}
           alt={title}
+          loading="lazy"
           className="property-image"
           onError={(e) => {
             e.target.src = `https://source.unsplash.com/600x400/?property`;

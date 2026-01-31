@@ -14,7 +14,14 @@ const Navbar = () => {
         <div className="gh-brand">
           <Link to="/" className="gh-logo">
             <svg viewBox="0 0 24 24" width="32" height="32" aria-hidden>
-              <rect x="2" y="7" width="20" height="12" rx="2" fill="#0B5FFF" />
+              <rect
+                x="2"
+                y="7"
+                width="20"
+                height="12"
+                rx="2"
+                fill="var(--gold)"
+              />
               <path
                 d="M6 7V4h12v3"
                 stroke="#fff"
@@ -77,7 +84,7 @@ const Navbar = () => {
                 >
                   <path
                     d="M6 9l6 6 6-6"
-                    stroke="#0B5FFF"
+                    stroke="var(--gold)"
                     strokeWidth="1.6"
                     strokeLinecap="round"
                     strokeLinejoin="round"

@@ -1,47 +1,68 @@
 :root{
-  --accent:#0B5FFF;
-  --dark:#0B1724;
-  --muted:#6b7280;
+  --accent: #07102a;
+  --gold: #c89b3c;
+  --muted: #6b7280;
 }
 
+/* Premium centered navbar matching reference */
 .gh-navbar{
-  background: linear-gradient(90deg, rgba(11,91,255,0.06), rgba(11,91,255,0.02));
-  border-bottom: 1px solid rgba(11,91,255,0.06);
-  position:sticky;
-  top:0;
-  z-index:60;
-  backdrop-filter: blur(6px);
+  background: #fff;
+  border-bottom: 1px solid rgba(7,16,42,0.04);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  height: 92px; /* match reference height */
 }
 
 .gh-container{
-  max-width:1100px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  padding:12px 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* brand | centered nav | actions */
+  align-items: center;
+  gap: 24px;
+  padding: 0 28px;
+  height: 100%;
 }
 
 .gh-brand{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:14px;
 }
+.gh-logo svg{ width:44px; height:44px; }
+.gh-title{ font-family: 'Playfair Display', serif; font-size:20px; font-weight:700; color:var(--accent); }
 
 .gh-logo{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
   text-decoration:none;
-  color:var(--dark);
+  color:var(--accent);
 }
 
 .gh-title{
   font-weight:700;
-  letter-spacing:0.3px;
-  color:#07102a;
-  font-size:18px;
+  letter-spacing:0.6px;
+  color:var(--accent);
+  font-size:20px;
+} 
+.gh-logo svg{ filter: drop-shadow(0 4px 12px rgba(200,155,60,0.08)); }
+
+.gh-nav a{ color:var(--accent); }
+.gh-nav a.active, .gh-nav a:hover{ color:var(--gold); background: transparent; }
+.gh-cta .gh-btn{ background: linear-gradient(135deg, var(--gold), #d1a84a); color:var(--accent); font-weight:700; padding:10px 22px; border-radius:26px; box-shadow:0 8px 20px rgba(200,155,60,0.12); }
+
+/* language pill */
+.gh-lang{ justify-self:end; }
+.gh-lang-btn{ background: #fff; border: 1px solid rgba(7,16,42,0.06); padding:8px 14px; border-radius:28px; font-weight:700; cursor:pointer; box-shadow: 0 6px 18px rgba(7,16,42,0.04); color:var(--accent); }
+
+.gh-lang-btn:hover{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(7,16,42,0.08); }
+
+/* compact mobile polish */
+@media (max-width:780px){
+  .gh-container{ padding:12px 16px; }
+  .gh-lang{ display:none; }
 }
 
 .gh-burger{

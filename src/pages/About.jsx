@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/About.css";
 
 export default function About() {
+  useEffect(() => {
+    const prev = document.title;
+    document.title = "About — Gurgaon Homes";
+    return () => (document.title = prev);
+  }, []);
   return (
     <div className="about-page container">
       <section className="about-hero">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useProperties } from "../hooks/useProperties";
 import PropertyCard from "../components/PropertyCard";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -7,6 +7,20 @@ import "../styles/Properties.css";
 
 export default function Properties() {
   const { properties, loading, error } = useProperties();
+
+  useEffect(() => {
+    const prev = document.title;
+    document.title = "Properties — Gurgaon Homes";
+    let meta = document.querySelector("meta[name=description]");
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.content =
+      "Browse all property listings in Gurgaon. Filter by category and find your perfect home.";
+    return () => (document.title = prev);
+  }, []);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <div>Error: {error}</div>;

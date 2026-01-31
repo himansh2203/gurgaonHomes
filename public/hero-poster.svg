@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0" stop-color="#07102a" stop-opacity="1"/>
+      <stop offset="1" stop-color="#c89b3c" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="#07102a" />
+  <g transform="translate(60,120)">
+    <text x="0" y="0" font-family="Playfair Display, serif" font-size="64" fill="#fff">Gurgaon Homes</text>
+    <text x="0" y="80" font-family="Inter, sans-serif" font-size="28" fill="#f3e7d0">Premium properties in Gurgaon</text>
+  </g>
+</svg>
