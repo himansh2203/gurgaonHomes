@@ -10,6 +10,8 @@
   border-bottom: 1px solid rgba(7,16,42,0.04);
   position: sticky;
   top: 0;
+  padding: 1.2rem;
+  
   z-index: 60;
   height: 92px; /* match reference height */
 }

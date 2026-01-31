@@ -23,7 +23,8 @@ export const useProperties = () => {
   }, []);
 
   useEffect(() => {
-    fetchProperties();
+    // defer initial fetch to avoid sync setState within effect (ESLint rule)
+    const t = setTimeout(() => fetchProperties(), 0);
 
     const socket = io(SERVER_ORIGIN);
     const onUpdate = () => fetchProperties();
@@ -33,6 +34,7 @@ export const useProperties = () => {
     window.addEventListener("propertiesUpdated", onUpdate);
 
     return () => {
+      clearTimeout(t);
       socket.off("propertiesUpdated", onUpdate);
       socket.disconnect();
       window.removeEventListener("propertiesUpdated", onUpdate);

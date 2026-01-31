@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useCallback } from "react";
 import "./Admin.css";
 import { Lock, Home, Bell, LogOut, Plus, Search, Filter } from "lucide-react";
 import AddPropertyTab from "./components/AddPropertyTab";
 import { propertyService, SERVER_ORIGIN } from "../services/api";
 import { io } from "socket.io-client";
+import { mockProperties } from "./mockData";
 
 // using central API base (propertyService) and SERVER_ORIGIN for uploads/fallbacks
 
@@ -31,37 +31,22 @@ export default function Admin() {
     status: "active",
   });
 
-  // Mock data if backend not running
-  const mockProperties = [
-    {
-      id: 1,
-      title: "Luxury 4BHK Villa",
-      location: "Golf Course Road, Gurgaon",
-      price: "₹2.5 Cr",
-      images: [],
-      bedrooms: 4,
-      bathrooms: 3,
-      area: 2500,
-      status: "active",
-    },
-  ];
-
   // Fetch properties from backend
-  const fetchProperties = async () => {
+  const fetchProperties = useCallback(async () => {
     try {
+      // set loading inside async flow (avoid sync setState in effect body)
       setLoading(true);
-      const response = await axios.get(`${API_BASE}/properties`).catch(() => {
-        console.log("Backend offline - using mock data");
-        return { data: mockProperties };
-      });
-      setProperties(response.data);
+      const resp = await propertyService
+        .getProperties()
+        .catch(() => ({ data: mockProperties }));
+      setProperties(resp.data || mockProperties);
     } catch (error) {
       console.error("Error fetching properties:", error);
-      setProperties(mockProperties); // Fallback
+      setProperties(mockProperties);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -77,7 +62,7 @@ export default function Admin() {
       socket.on("propertiesUpdated", handler);
       return () => socket.disconnect();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, fetchProperties]);
 
   const handleLogin = (e) => {
     e.preventDefault();

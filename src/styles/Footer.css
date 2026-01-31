@@ -1,11 +1,293 @@
-.gh-footer{ background: linear-gradient(180deg, #fff, #fbfdff); border-top:1px solid rgba(7,16,42,0.04); margin-top:40px;}
-.gh-footer-inner{ max-width:1200px; margin:0 auto; display:flex; gap:40px; padding:36px 24px; align-items:flex-start; justify-content:space-between; }
-.gh-logo-small{ display:flex; gap:12px; align-items:center; }
-.gh-title{ font-weight:700; color:var(--accent); }
-.gh-muted{ color:var(--muted); font-size:13px; margin-top:4px; }
-.gh-footer-links{ display:flex; gap:36px; }
-.gh-footer-links h4{ margin:0 0 8px 0; color:var(--accent); }
-.gh-footer-links a{ display:block; color:#374151; text-decoration:none; margin-bottom:6px; }
-.gh-footer-bottom{ border-top:1px solid rgba(7,16,42,0.03); padding:12px 20px; text-align:center; color:var(--muted); }
+/* Footer Styles: Premium Look & Scoped */
+.gh-footer {
+  --footer-bg-1: #0b1224;
+  --footer-bg-2: #020916;
+  --gold: #d4af37; /* richer gold for premium look */
+  background: linear-gradient(180deg, var(--footer-bg-1), var(--footer-bg-2));
+  color: rgba(255, 255, 255, 0.95);
+  padding: 60px 0 30px 0;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+}
 
-@media (max-width:780px){ .gh-footer-inner{ flex-direction:column; gap:18px; align-items:flex-start; } }
+.gh-footer a {
+  color: rgba(255,255,255,0.87);
+  text-decoration: none;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.gh-footer a:hover {
+  color: var(--gold);
+  transform: translateY(-2px);
+}
+
+.gh-footer .gh-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1.4fr;
+  gap: 40px;
+  padding: 30px 24px;
+  align-items: start;
+}
+
+/* Headings */
+.gh-footer h4 {
+  margin: 0 0 14px 0;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Logo & Brand */
+.gh-footer .gh-logo-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.gh-footer .gh-logo-badge {
+  width: 58px;
+  height: 58px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.gh-footer .gh-logo-badge:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 16px 35px rgba(0,0,0,0.65);
+}
+
+.gh-footer .gh-logo-badge.small {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.gh-footer .gh-title {
+  font-weight: 700;
+  color: #fff;
+  font-size: 18px;
+}
+
+.gh-footer .gh-muted {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  margin-top: 6px;
+  max-width: 260px;
+}
+
+/* Sitemap / Contact / About columns */
+.gh-footer .gh-sitemap nav,
+.gh-footer .gh-contact,
+.gh-footer .gh-about {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Contact Rows */
+.gh-footer .contact-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255,255,255,0.88);
+  font-size: 14px;
+}
+
+.gh-footer .contact-row .icon {
+  color: var(--gold);
+  min-width: 20px;
+  min-height: 20px;
+}
+
+/* Social Icons */
+.gh-footer .social-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.gh-footer .social {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.25s ease;
+  font-size: 22px;
+}
+
+.gh-footer .social:hover {
+  background: rgba(255,255,255,0.08);
+  color: var(--gold);
+  transform: translateY(-4px) scale(1.08);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* About Section */
+.gh-footer .about-heading {
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.gh-footer .about-text {
+  color: rgba(255,255,255,0.75);
+  margin-top: 8px;
+  max-width: 360px;
+  line-height: 1.6;
+}
+
+/* Footer Links & Policies */
+.gh-footer .gh-footer-links-row {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  margin-top: 24px;
+  padding-top: 18px;
+}
+
+.gh-footer .policy-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  text-align: center;
+}
+
+/* Footer Bottom */
+.gh-footer .gh-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 24px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.gh-footer .gh-copy-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: rgba(255,255,255,0.86);
+  font-size: 14px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.gh-footer .gh-copy-right {
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 14px;
+  flex: 1;
+  text-align: right;
+  min-width: 220px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .gh-footer .gh-footer-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .gh-footer .policy-nav {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .gh-footer .gh-footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  .gh-footer .gh-copy-right {
+    text-align: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .gh-footer {
+    padding: 32px 0 16px 0;
+  }
+  .gh-footer .gh-title {
+    font-size: 16px;
+  }
+  .gh-footer .gh-logo-badge {
+    width: 48px;
+    height: 48px;
+  }
+  .gh-footer .social {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}
+
+/* Contact - clean, single-column layout with an aligned icon column */
+.gh-footer .gh-contact {
+  display: flex;
+  flex-direction: column;
+}
+
+.gh-footer .gh-contact address {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+}
+
+.gh-footer .contact-row {
+  display: flex;
+  align-items: center; /* vertically center icon + text */
+  gap: 14px;
+}
+
+/* fixed icon column for neat vertical alignment */
+.gh-footer .icon-wrap {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.02);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.03);
+  flex-shrink: 0;
+}
+
+.gh-footer .contact-row .icon {
+  color: var(--gold);
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.gh-footer .contact-text {
+  color: rgba(255,255,255,0.9);
+  font-size: 14px;
+}
+
+.gh-footer .contact-text a {
+  color: rgba(255,255,255,0.9);
+  text-decoration: none;
+}
+.gh-footer .contact-text a:hover {
+  color: var(--gold);
+}
+
+@media (max-width: 600px) {
+  .gh-footer .icon-wrap { width: 36px; height: 36px; }
+  .gh-footer .contact-row { gap: 10px; }
+  .gh-footer .contact-text { font-size: 13px; }
+}

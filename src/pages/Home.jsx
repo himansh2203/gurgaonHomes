@@ -6,6 +6,10 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { useProperties } from "../hooks/useProperties";
 import { propertyService } from "../services/api";
 import "../styles/Home.css";
+import { Helmet } from "react-helmet-async";
+import ServicesSection from "../components/ServicesSection";
+import Testimonials from "../components/Testimonials";
+import CTASection from "../components/CTASection";
 import TrustAndExc from "../components/TrustAndExc";
 import AboutSection from "../components/AboutSection";
 import ExploreProperties from "../components/ExploreProperties";
@@ -16,27 +20,8 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("all");
 
-  useEffect(() => {
-    const prevTitle = document.title;
-    const prevDesc =
-      document
-        .querySelector("meta[name=description]")
-        ?.getAttribute("content") || null;
-    document.title = "Gurgaon Homes — Find premium properties in Gurgaon";
-    let meta = document.querySelector("meta[name=description]");
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
-    }
-    meta.content =
-      "Search curated real estate listings in Gurgaon. Villas, apartments, and premium residences.";
-    return () => {
-      document.title = prevTitle;
-      if (prevDesc !== null)
-        document.querySelector("meta[name=description]").content = prevDesc;
-    };
-  }, []);
+  // SEO: use Helmet (react-helmet-async)
+  // Title & meta are now handled declaratively in the component render via <Helmet />
 
   useEffect(() => {
     propertyService
@@ -58,14 +43,30 @@ export default function Home() {
 
   return (
     <div className="home-page">
+      <Helmet>
+        <title>Gurgaon Homes — Find premium properties in Gurgaon</title>
+        <meta
+          name="description"
+          content="Search curated real estate listings in Gurgaon. Villas, apartments, and premium residences."
+        />
+        <link rel="canonical" href="https://yourdomain.example/" />
+      </Helmet>
+
       <Hero
         searchValue={search}
         onSearchChange={setSearch}
         propertiesCount={properties.length}
       />
+
+
       <TrustAndExc />
       <AboutSection />
       <ExploreProperties />
+
+       {/* Services + Testimonials + CTA (Gurgaon Homes content) */}
+      <ServicesSection />
+      <Testimonials />
+      <CTASection />
       <div className="container filters-bar">
         <label className="category-label">Filter by category:</label>
         <select value={category} onChange={(e) => setCategory(e.target.value)}>

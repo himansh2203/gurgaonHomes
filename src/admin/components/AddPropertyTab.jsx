@@ -20,13 +20,12 @@ export default function AddPropertyTab({
   const [images, setImages] = useState([]);
   const [video, setVideo] = useState(null);
   const [dragging, setDragging] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Load existing images/videos when editing
   useEffect(() => {
     if (editingProperty) {
-      // Load existing images from backend URLs
-      setImages([]);
+      // Load existing images from backend URLs (defer to next tick to avoid sync setState in effect)
+      setTimeout(() => setImages([]), 0);
       if (editingProperty.images) {
         // Convert image URLs to preview objects (for display only)
         const imagePreviews = editingProperty.images.map((url, index) => ({
@@ -35,20 +34,24 @@ export default function AddPropertyTab({
           name: `image_${index + 1}.jpg`,
           isExisting: true,
         }));
-        setImages(imagePreviews);
+        setTimeout(() => setImages(imagePreviews), 0);
       }
 
       // Load existing video
       if (editingProperty.video) {
-        setVideo({
-          name: editingProperty.video.split("/").pop(),
-          url: editingProperty.video,
-          isExisting: true,
-        });
+        setTimeout(
+          () =>
+            setVideo({
+              name: editingProperty.video.split("/").pop(),
+              url: editingProperty.video,
+              isExisting: true,
+            }),
+          0,
+        );
       }
     } else {
-      setImages([]);
-      setVideo(null);
+      setTimeout(() => setImages([]), 0);
+      setTimeout(() => setVideo(null), 0);
     }
   }, [editingProperty]);
 
@@ -102,7 +105,7 @@ export default function AddPropertyTab({
   };
 
   // Create FormData for backend submission
-  const createFormData = (e) => {
+  const createFormData = () => {
     const formData = new FormData();
 
     // Form fields

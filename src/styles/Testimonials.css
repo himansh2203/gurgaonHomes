@@ -1,0 +1,18 @@
+.gh-testimonials{ padding:72px 0; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.01)); }
+.gh-testimonials .gh-section-head.center{ text-align:center; }
+.gh-test-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:24px; margin-top:28px; }
+.gh-test-card{ background:var(--white); border-radius:16px; padding:28px; border:1px solid rgba(7,16,42,0.03); box-shadow:0 10px 30px rgba(7,16,42,0.04); }
+.stars{ color:var(--gold); font-weight:700; margin-bottom:12px; }
+.quote{ font-style:italic; color:var(--muted); min-height:110px; }
+.who{ display:flex; gap:12px; align-items:center; margin-top:18px; border-top:1px solid rgba(7,16,42,0.03); padding-top:14px; }
+.avatar{ width:40px; height:40px; background:var(--gold); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; }
+.who-name{ font-weight:700; color:var(--accent); }
+.who-meta{ color:var(--muted); font-size:13px; }
+
+@media (max-width:900px){ .gh-test-grid{ grid-template-columns: repeat(2,1fr); } }
+@media (max-width:600px){ .gh-test-grid{ grid-template-columns: 1fr; } }
+
+.gh-testimonials .gh-container {
+  display: block !important;
+  grid-template-columns: unset !important;
+}

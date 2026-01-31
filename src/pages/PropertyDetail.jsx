@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { propertyService, SERVER_ORIGIN } from "../services/api";
 import { io } from "socket.io-client";
+import { Helmet } from "react-helmet-async";
 import "../styles/PropertyDetail.css";
 
 export default function PropertyDetail() {
@@ -14,40 +15,46 @@ export default function PropertyDetail() {
   const [enquiry, setEnquiry] = useState({ name: "", email: "", message: "" });
 
   useEffect(() => {
-    setLoading(true);
+    let cancelled = false;
 
-    // Primary attempt: fetch by id
-    propertyService
-      .getPropertyById(propertyId)
-      .then((res) => {
-        setProperty(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        // Fallback: try fetching list and find matching property by id or slug
-        console.warn("getPropertyById failed, falling back to list:", err);
-        propertyService
-          .getProperties()
-          .then((r) => {
-            const found = (r.data || []).find(
-              (p) =>
-                (p._id || p.id || "").toString() === propertyId ||
-                (p.slug || "").includes(propertyId),
-            );
-            if (found) {
-              setProperty(found);
-              setError(null);
-            } else {
-              setError("Property not found");
-            }
-            setLoading(false);
-          })
-          .catch((e) => {
-            console.error(e);
-            setError("Failed to load property");
-            setLoading(false);
-          });
-      });
+    const load = async () => {
+      try {
+        setLoading(true);
+        const res = await propertyService
+          .getPropertyById(propertyId)
+          .catch(() => null);
+        if (res && !cancelled) {
+          setProperty(res.data);
+          setLoading(false);
+          return;
+        }
+
+        // Fallback to list search
+        const r = await propertyService.getProperties();
+        const found = (r.data || []).find(
+          (p) =>
+            (p._id || p.id || "").toString() === propertyId ||
+            (p.slug || "").includes(propertyId),
+        );
+        if (!cancelled) {
+          if (found) {
+            setProperty(found);
+            setError(null);
+          } else {
+            setError("Property not found");
+          }
+          setLoading(false);
+        }
+      } catch (e) {
+        if (!cancelled) {
+          console.error(e);
+          setError("Failed to load property");
+          setLoading(false);
+        }
+      }
+    };
+
+    load();
 
     const socket = io(SERVER_ORIGIN);
     const handler = (payload) => {
@@ -60,102 +67,14 @@ export default function PropertyDetail() {
     };
     socket.on("propertiesUpdated", handler);
 
-    return () => socket.disconnect();
+    return () => {
+      cancelled = true;
+      socket.disconnect();
+    };
   }, [propertyId]);
 
-  // SEO: update title & meta when property is loaded
-  useEffect(() => {
-    if (!property) return;
-    const prevTitle = document.title;
-    const prevDesc =
-      document
-        .querySelector("meta[name=description]")
-        ?.getAttribute("content") || null;
-
-    document.title = `${property.title} — Gurgaon Homes`;
-    let meta = document.querySelector("meta[name=description]");
-    if (!meta) {
-      meta = document.createElement("meta");
-      meta.name = "description";
-      document.head.appendChild(meta);
-    }
-    meta.content = (
-      property.description || "Premium property listing in Gurgaon."
-    ).slice(0, 160);
-
-    // Open Graph
-    const ogTitle =
-      document.querySelector("meta[property='og:title']") ||
-      (function () {
-        const m = document.createElement("meta");
-        m.setAttribute("property", "og:title");
-        document.head.appendChild(m);
-        return m;
-      })();
-    ogTitle.content = property.title;
-    const ogDesc =
-      document.querySelector("meta[property='og:description']") ||
-      (function () {
-        const m = document.createElement("meta");
-        m.setAttribute("property", "og:description");
-        document.head.appendChild(m);
-        return m;
-      })();
-    ogDesc.content = (property.description || "").slice(0, 160);
-
-    const ogImage =
-      document.querySelector("meta[property='og:image']") ||
-      (function () {
-        const m = document.createElement("meta");
-        m.setAttribute("property", "og:image");
-        document.head.appendChild(m);
-        return m;
-      })();
-    ogImage.content =
-      property.images && property.images[0]
-        ? property.images[0].startsWith("http")
-          ? property.images[0]
-          : `${SERVER_ORIGIN}${property.images[0]}`
-        : `https://source.unsplash.com/1200x800/?property`;
-
-    // JSON-LD structured data for a real estate listing (basic)
-    const jsonLdId = "gh-property-jsonld";
-    let existing = document.getElementById(jsonLdId);
-    if (existing) existing.remove();
-    const script = document.createElement("script");
-    script.id = jsonLdId;
-    script.type = "application/ld+json";
-    script.text = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Place",
-      name: property.title,
-      description: (property.description || "").slice(0, 300),
-      image: ogImage.content,
-      geo: { "@type": "GeoCoordinates", address: property.location || "" },
-    });
-    document.head.appendChild(script);
-
-    // canonical link for SEO
-    let canonical = document.querySelector("link[rel=canonical]");
-    const prevCanonical = canonical ? canonical.href : null;
-    if (!canonical) {
-      canonical = document.createElement("link");
-      canonical.rel = "canonical";
-      document.head.appendChild(canonical);
-    }
-    canonical.href = window.location.href;
-
-    return () => {
-      document.title = prevTitle;
-      if (prevDesc !== null)
-        document.querySelector("meta[name=description]").content = prevDesc;
-      // remove JSON-LD
-      const e = document.getElementById(jsonLdId);
-      if (e) e.remove();
-      // restore canonical
-      if (prevCanonical) canonical.href = prevCanonical;
-    };
-  }, [property]);
+  // SEO handled via Helmet (react-helmet-async)
+  // Keep previous manual DOM manipulation as fallback, but prefer Helmet for clean SSR-friendly meta.
 
   if (loading) return <div className="loading">Loading property...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -166,6 +85,41 @@ export default function PropertyDetail() {
       .toString()
       .toLowerCase(),
   )}`;
+
+  const ogImage =
+    property.images && property.images[0]
+      ? property.images[0].startsWith("http")
+        ? property.images[0]
+        : `${SERVER_ORIGIN}${property.images[0]}`
+      : `https://source.unsplash.com/1200x800/?property`;
+
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Place",
+    name: property.title,
+    description: (property.description || "").slice(0, 300),
+    image: ogImage,
+    geo: { "@type": "GeoCoordinates", address: property.location || "" },
+  });
+
+  // Helmet meta
+  const helmetBlock = (
+    <Helmet>
+      <title>{`${property.title} — Gurgaon Homes`}</title>
+      <meta
+        name="description"
+        content={(property.description || "").slice(0, 160)}
+      />
+      <meta property="og:title" content={property.title} />
+      <meta
+        property="og:description"
+        content={(property.description || "").slice(0, 160)}
+      />
+      <meta property="og:image" content={ogImage} />
+      <link rel="canonical" href={window.location.href} />
+      <script type="application/ld+json">{jsonLd}</script>
+    </Helmet>
+  );
 
   const imageUrl = (img) => {
     if (!img) return fallback;
@@ -188,6 +142,7 @@ export default function PropertyDetail() {
 
   return (
     <div className="property-detail container">
+      {helmetBlock}
       <Link to="/" className="back-link">
         ← Back to listings
       </Link>

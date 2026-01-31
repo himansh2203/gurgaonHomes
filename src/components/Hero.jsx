@@ -1,7 +1,6 @@
 import "../styles/Hero.css";
 import SearchBar from "../components/SearchBar";
 import StatsCard from "./StatsCard";
-import { useProperties } from "../hooks/useProperties"; // ✅ Fixed!
 
 export default function Hero({ searchValue, onSearchChange, propertiesCount }) {
   const stats = [
@@ -29,13 +28,12 @@ export default function Hero({ searchValue, onSearchChange, propertiesCount }) {
         muted
         loop
         playsInline
+        preload="metadata"
         poster="/hero-poster.jpg"
       >
+        <source src="/hero-720.webm" type="video/webm" />
+        <source src="/hero-720.mp4" type="video/mp4" />
         <source src="/gurgaon-hero.mp4" type="video/mp4" />
-        <source
-          src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
-          type="video/mp4"
-        />
       </video>
 
       <div className="hero-overlay" />

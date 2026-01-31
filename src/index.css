@@ -125,6 +125,7 @@ button:hover {
   font-size: 14px;
   line-height: 1.5;
 }
+/* Theme overrides and layout helpers */
 :root {
   --gold: #c8a45d;
   --gold-dark: #a37a3c;
@@ -134,11 +135,17 @@ button:hover {
   --border-light: #e5e7eb;
 }
 
+/* Layout helpers for sticky footer */
+html, body, #root, .gh-app { height: 100%; }
+.gh-app { min-height: 100vh; display:flex; flex-direction:column; }
+.gh-main { flex: 1; }
+
 /* Body */
 body {
   background: var(--bg-cream);
   color: var(--text-dark);
   font-family: "Poppins", sans-serif;
+  margin: 0;
 }
 
 /* Headings */
