@@ -1,0 +1,33 @@
+.search-wrapper {
+  position: relative;
+  max-width: 32rem;
+  margin: 0 auto;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  color: #9ca3af;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1.25rem 1.5rem 1.25rem 4rem;
+  font-size: 1.125rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.375rem rgba(102, 126, 234, 0.1);
+  transform: translateY(-2px);
+}
+
