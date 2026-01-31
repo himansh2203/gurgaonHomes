@@ -58,16 +58,15 @@ export default function Home() {
         propertiesCount={properties.length}
       />
 
-
       <TrustAndExc />
       <AboutSection />
       <ExploreProperties />
 
-       {/* Services + Testimonials + CTA (Gurgaon Homes content) */}
+      {/* Services + Testimonials + CTA (Gurgaon Homes content) */}
       <ServicesSection />
       <Testimonials />
       <CTASection />
-      <div className="container filters-bar">
+      {/* <div className="container filters-bar">
         <label className="category-label">Filter by category:</label>
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
           {categories.map((c) => (
@@ -91,7 +90,7 @@ export default function Home() {
             </div>
           )}
         </div>
-      </main>
+      </main> */}
     </div>
   );
 }
