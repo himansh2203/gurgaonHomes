@@ -17,9 +17,11 @@ import ExploreProperties from "../components/ExploreProperties";
 export default function Home() {
   const { properties, loading, error } = useProperties();
   const [search, setSearch] = useState("");
+  // SEO: use Helmet (react-helmet-async)
+  // Title & meta are now handled declaratively in the component render via <Helmet />
 
   if (loading) return <LoadingSpinner />;
-  if (error) return <div>Error: {error}</div>;
+  // if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="home-page">
