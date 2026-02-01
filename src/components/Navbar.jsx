@@ -13,7 +13,7 @@ const Navbar = () => {
       <div className="gh-container">
         <div className="gh-brand">
           <Link to="/" className="gh-logo">
-            <img src="/logo.ico" alt="Gurgaon Homes Logo" />
+            <img src="/logo.png" alt="Gurgaon Homes Logo" />
             <span className="gh-title">Gurgaon Homes</span>
           </Link>
 
@@ -41,20 +41,20 @@ const Navbar = () => {
             </li>
             <li>
               <NavLink
-                to="/about"
-                className={({ isActive }) => (isActive ? "active" : "")}
-                onClick={() => setMenuOpen(false)}
-              >
-                About
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
                 to="/properties"
                 className={({ isActive }) => (isActive ? "active" : "")}
                 onClick={() => setMenuOpen(false)}
               >
                 Properties
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/about"
+                className={({ isActive }) => (isActive ? "active" : "")}
+                onClick={() => setMenuOpen(false)}
+              >
+                About
               </NavLink>
             </li>
 

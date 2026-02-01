@@ -122,9 +122,12 @@ export default function PropertyDetail() {
         const found = list.find((p) => {
           const pid = (p._id || p.id || "").toString();
           const slug = (p.slug || "").toString();
-          return (
-            pid === idToQuery || slug === idToQuery || slug.includes(idToQuery)
-          );
+
+          // STRICT MATCHING ONLY
+          if (pid === idToQuery) return true;
+          if (slug === idToQuery) return true;
+
+          return false;
         });
 
         if (!cancelled) {
@@ -186,10 +189,10 @@ export default function PropertyDetail() {
       : undefined,
     offers: property.price
       ? {
-          "@type": "Offer",
-          price: property.priceValue || undefined,
-          priceCurrency: "INR",
-        }
+        "@type": "Offer",
+        price: property.priceValue || undefined,
+        priceCurrency: "INR",
+      }
       : undefined,
   });
 

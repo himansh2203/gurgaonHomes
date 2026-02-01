@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import "./Admin.css";
 import { Lock, Home, Bell, LogOut, Plus, Search, Filter } from "lucide-react";
 import AddPropertyTab from "./components/AddPropertyTab";
+import Toast from "../components/Toast"; // Import Toast
 import { propertyService, SERVER_ORIGIN } from "../services/api";
 import { io } from "socket.io-client";
 import { mockProperties } from "./mockData";
@@ -13,6 +14,12 @@ export default function Admin() {
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState("dashboard");
   const [properties, setProperties] = useState([]);
+  // Toast state
+  const [toast, setToast] = useState({ show: false, message: "", type: "success" });
+
+  const notify = (message, type = "success") => {
+    setToast({ show: true, message, type });
+  };
   const [loading, setLoading] = useState(false);
   const [editingProperty, setEditingProperty] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -39,7 +46,15 @@ export default function Admin() {
       const resp = await propertyService
         .getProperties()
         .catch(() => ({ data: mockProperties }));
-      setProperties(resp.data || mockProperties);
+
+      const responseData = resp.data;
+      if (Array.isArray(responseData)) {
+        setProperties(responseData);
+      } else if (responseData && Array.isArray(responseData.data)) {
+        setProperties(responseData.data);
+      } else {
+        setProperties(mockProperties);
+      }
     } catch (error) {
       console.error("Error fetching properties:", error);
       setProperties(mockProperties);
@@ -55,7 +70,7 @@ export default function Admin() {
       propertyService
         .getCategories()
         .then((r) => setCategories(r.data))
-        .catch(() => {});
+        .catch(() => { });
 
       const socket = io(SERVER_ORIGIN);
       const handler = () => fetchProperties();
@@ -69,8 +84,9 @@ export default function Admin() {
     if (password === "admin123") {
       setIsLoggedIn(true);
       setPassword("");
+      notify("Welcome back, Admin!");
     } else {
-      alert("❌ Wrong Password! Use: admin123");
+      notify("Wrong Password! Use: admin123", "error");
     }
   };
 
@@ -82,10 +98,10 @@ export default function Admin() {
       if (editingProperty) {
         const idToUpdate = editingProperty._id || editingProperty.id;
         await propertyService.updateProperty(idToUpdate, formData);
-        alert("✅ Property updated successfully!");
+        notify("Property updated successfully!");
       } else {
         await propertyService.createProperty(formData);
-        alert("✅ Property added successfully!");
+        notify("Property added successfully!");
       }
 
       // notify other parts of the app to refresh listings
@@ -106,7 +122,7 @@ export default function Admin() {
       fetchProperties();
     } catch (error) {
       console.error("Error:", error);
-      alert("❌ Error saving property!");
+      notify("Error saving property!", "error");
     } finally {
       setLoading(false);
     }
@@ -117,13 +133,13 @@ export default function Admin() {
 
     try {
       await propertyService.deleteProperty(id);
-      alert("✅ Property deleted!");
+      notify("Property deleted!");
       // inform other views and refresh list
       window.dispatchEvent(new Event("propertiesUpdated"));
       fetchProperties();
     } catch (error) {
       console.error(error);
-      alert("❌ Error deleting property!");
+      notify("Error deleting property!", "error");
     }
   };
 
@@ -354,8 +370,17 @@ export default function Admin() {
               editing={!!editingProperty}
               onSubmit={submitProperty}
               editingProperty={editingProperty}
+              notify={notify}
             />
           </div>
+        )}
+
+        {toast.show && (
+          <Toast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({ ...toast, show: false })}
+          />
         )}
       </main>
     </div>

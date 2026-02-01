@@ -15,7 +15,8 @@ export default function AddPropertyTab({
   loading,
   editing,
   onSubmit,
-  editingProperty, // Add this prop for edit mode
+  editingProperty,
+  notify,
 }) {
   const [images, setImages] = useState([]);
   const [video, setVideo] = useState(null);
@@ -24,10 +25,8 @@ export default function AddPropertyTab({
   // Load existing images/videos when editing
   useEffect(() => {
     if (editingProperty) {
-      // Load existing images from backend URLs (defer to next tick to avoid sync setState in effect)
       setTimeout(() => setImages([]), 0);
       if (editingProperty.images) {
-        // Convert image URLs to preview objects (for display only)
         const imagePreviews = editingProperty.images.map((url, index) => ({
           id: index,
           url,
@@ -37,7 +36,6 @@ export default function AddPropertyTab({
         setTimeout(() => setImages(imagePreviews), 0);
       }
 
-      // Load existing video
       if (editingProperty.video) {
         setTimeout(
           () =>
@@ -62,11 +60,11 @@ export default function AddPropertyTab({
 
     const validImages = files.filter((file) => {
       if (!allowedTypes.includes(file.type)) {
-        alert(`❌ ${file.name} - Only JPG, PNG, WebP allowed!`);
+        notify(`${file.name} - Only JPG, PNG, WebP allowed!`, "error");
         return false;
       }
       if (file.size > 5 * 1024 * 1024) {
-        alert(`❌ ${file.name} - Max 5MB per image!`);
+        notify(`${file.name} - Max 5MB per image!`, "error");
         return false;
       }
       return true;
@@ -84,31 +82,27 @@ export default function AddPropertyTab({
     if (!file) return;
 
     if (file.type !== "video/mp4") {
-      alert("❌ Only MP4 videos allowed!");
+      notify("Only MP4 videos allowed!", "error");
       return;
     }
     if (file.size > 50 * 1024 * 1024) {
-      alert("❌ Video max 50MB!");
+      notify("Video max 50MB!", "error");
       return;
     }
     setVideo(file);
   };
 
-  // Remove image
   const removeImage = (index) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // Remove video
   const removeVideo = () => {
     setVideo(null);
   };
 
-  // Create FormData for backend submission
   const createFormData = () => {
     const formData = new FormData();
 
-    // Form fields
     formData.append("title", data.title);
     formData.append("location", data.location);
     formData.append("price", data.price);
@@ -119,14 +113,12 @@ export default function AddPropertyTab({
     formData.append("status", data.status);
     formData.append("category", data.category || "house");
 
-    // New images (File objects only)
     images.forEach((image) => {
       if (!image.isExisting) {
         formData.append("images", image);
       }
     });
 
-    // New video (File object only)
     if (video && !video.isExisting) {
       formData.append("video", video);
     }
@@ -134,7 +126,6 @@ export default function AddPropertyTab({
     return formData;
   };
 
-  // Drag & Drop handlers
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -160,7 +151,6 @@ export default function AddPropertyTab({
     }
   };
 
-  // Create preview URLs
   const imagePreviews = images.map((file, index) => (
     <div key={file.id || index} className="image-preview">
       <img
@@ -199,12 +189,11 @@ export default function AddPropertyTab({
     </div>
   );
 
-  // Form submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!data.title || !data.location || !data.price || !data.description) {
-      alert("❌ Please fill all required fields!");
+      notify("Please fill all required fields!", "error");
       return;
     }
 
@@ -212,7 +201,6 @@ export default function AddPropertyTab({
 
     try {
       await onSubmit(e, formData);
-      // Reset form after successful submission
       setImages([]);
       setVideo(null);
     } catch (error) {
@@ -322,6 +310,7 @@ export default function AddPropertyTab({
         <div className="form-group full-width">
           <label>
             <Video size={18} /> Property Video Tour (Optional)
+            {video && " ✓"}
           </label>
           <div className="upload-zone video-zone">
             <input

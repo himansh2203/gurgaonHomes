@@ -1,0 +1,74 @@
+.gh-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  min-width: 300px;
+  animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-left: 4px solid transparent;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.gh-toast.success {
+  border-left-color: #10b981;
+}
+
+.gh-toast.error {
+  border-left-color: #ef4444;
+}
+
+.gh-toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gh-toast.success .gh-toast-icon {
+  color: #10b981;
+}
+
+.gh-toast.error .gh-toast-icon {
+  color: #ef4444;
+}
+
+.gh-toast-message {
+  flex: 1;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.gh-toast-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9ca3af;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  transition: all 0.2s;
+}
+
+.gh-toast-close:hover {
+  background: #f3f4f6;
+  color: #4b5563;
+}
