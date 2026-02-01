@@ -4,8 +4,25 @@ export const API_BASE = "http://localhost:5000/api";
 export const SERVER_ORIGIN = API_BASE.replace(/\/api$/, "");
 
 export const propertyService = {
-  getProperties: (params = {}) =>
-    axios.get(`${API_BASE}/properties`, { params }),
+  // Try backend first. If it fails, fallback to local sample JSON in /data/sample-properties.json
+  getProperties: async (params = {}) => {
+    try {
+      const res = await axios.get(`${API_BASE}/properties`, {
+        params,
+        timeout: 5000,
+      });
+      return res;
+    } catch (err) {
+      // fallback to bundled sample data so UI works when backend is down
+      try {
+        const fallback = await fetch(`/data/sample-properties.json`);
+        const data = await fallback.json();
+        return { data };
+      } catch (fetchErr) {
+        return Promise.reject(err);
+      }
+    }
+  },
   getCategories: () => axios.get(`${API_BASE}/categories`),
   getPropertyById: (idOrSlug) => {
     if (!idOrSlug) return Promise.reject(new Error("Missing id"));

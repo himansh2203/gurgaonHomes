@@ -110,24 +110,27 @@ export default function Contact() {
 
           <div className="ct-info-item">
             <span className="ct-info-heading">Phone:</span>
-            <p className="ct-info-text">+91 9711155417</p>
+            <p className="ct-info-text">+91 9718069177</p>
           </div>
 
           <div className="ct-info-item">
             <span className="ct-info-heading">Address:</span>
             <p className="ct-info-text">
-              WZ-56 Sharbati Complex, Jwalaheri, New Delhi, India 110056
+              C-1527, Vyapar Kendra Rd, Block C, Sushant Lok Phase I, Sector 43,
+              Gurugram, Haryana 122009
             </p>
           </div>
 
           <div className="ct-map">
             <iframe
-              className="ct-map-iframe"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.7120087650787!2d77.10040977375431!3d28.668340582456835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d03878d2ae1d5%3A0x730969cd6cff28ee!2sSharbati%20Complex%2C%20Jwalaheri%20Village%2C%20Paschim%20Vihar%2C%20Delhi%2C%20110063!5e0!3m2!1sen!2sin!4v1765395917741!5m2!1sen!2sin"
-              allowFullScreen=""
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d112275.1314757729!2d77.0016430390625!3d28.431388780557768!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d1941642ab705%3A0x8b4a1d852c55993!2sGurgaon%20Homes!5e0!3m2!1sen!2sin!4v1769901217995!5m2!1sen!2sin"
+              width="100%"
+              height="350"
+              style={{ border: 0 }}
+              allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Google Map"
+              title="Gurgaon Homes Location"
             ></iframe>
           </div>
         </div>

@@ -32,22 +32,54 @@
 /* ====== IMAGE GALLERY ====== */
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
+  grid-template-columns: 1fr 120px;
+  gap: 18px;
 }
 
-.gallery img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
+.gallery-main {
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
 }
 
-.gallery img:hover {
-  transform: scale(1.03);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+.gallery-main img, .gallery-main video {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-thumbs{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items: stretch;
+}
+
+.gallery-thumbs .thumb{
+  width:100%;
+  height:80px;
+  padding:0;
+  border: none;
+  background: rgba(255,255,255,0.02);
+  border-radius:10px;
+  overflow:hidden;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.gallery-thumbs .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+.gallery-thumbs .thumb.active{ outline: 2px solid rgba(212,175,55,0.9); transform: translateY(-3px); }
+
+.video-thumb{ font-size:26px; color: rgba(255,255,255,0.9); background: rgba(0,0,0,0.4); width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+
+@media (max-width:900px){
+  .gallery{ grid-template-columns:1fr; }
+  .gallery-main img, .gallery-main video{ height:320px }
+  .gallery-thumbs{ flex-direction:row; overflow:auto; }
+  .gallery-thumbs .thumb{ height:72px; width:110px; flex:0 0 auto }
 }
 
 /* ====== PROPERTY INFO ====== */
@@ -176,6 +208,34 @@
 .btn-enquire:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+}
+
+/* Inline notice messages */
+.notice {
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+.notice.success {
+  background: linear-gradient(90deg,#ecfdf5,#bbf7d0);
+  color: #065f46;
+  border: 1px solid rgba(6,95,70,0.08);
+}
+.notice.error {
+  background: linear-gradient(90deg,#fff1f2,#fecaca);
+  color: #7f1d1d;
+  border: 1px solid rgba(127,29,29,0.08);
+}
+
+.property-detail-error {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  text-align: center;
+  background: linear-gradient(135deg,#111827,#0f172a);
+  color: #fff;
+  border-radius: 12px;
 }
 
 /* ====== LOADING & ERROR ====== */

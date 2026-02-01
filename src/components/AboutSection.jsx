@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/AboutSection.css";
 import aboutImg from "../assets/dlf.jfif"; // apni image path
+import { Link } from "react-router-dom";
 
 import {
   FaMapMarkerAlt,
@@ -45,26 +46,29 @@ const AboutSection = () => {
           <div className="company-item">
             <FaMapMarkerAlt />
             <span>
-              Silver Tower - Business Bay - Dubai - United Arab Emirates
+              C-1527, Vyapar Kendra Rd, Block C, Sushant Lok Phase I, Sector 43,
+              Gurugram, Haryana 122009
             </span>
           </div>
 
           <div className="company-item">
             <FaPhoneAlt />
-            <span>+971 54 739 9300</span>
+            <span>+91 97180 69177</span>
           </div>
 
           <div className="company-item">
             <FaEnvelope />
-            <span>info@rafazproperties.com</span>
+            <span>gurgaonhomes@gmail.com</span>
           </div>
         </div>
 
-        <button className="about-btn">Explore Properties</button>
+        <button className="about-btn">
+          <Link to="/properties">Explore Properties</Link>
+        </button>
       </div>
 
       <div className="about-right">
-        <img src={aboutImg} alt="Dubai Property" />
+        <img src={aboutImg} alt="About Gurgaon Homes" />
       </div>
     </section>
   );

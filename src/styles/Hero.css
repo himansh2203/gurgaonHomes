@@ -59,7 +59,7 @@
 }
 
 .highlight {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8766ea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -96,9 +96,27 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.stats-card.emerald { background: linear-gradient(135deg, #10b981, #059669); }
-.stats-card.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
-.stats-card.indigo { background: linear-gradient(135deg, #667eea, #764ba2); }
+.stats-card.emerald {
+  background: linear-gradient(135deg,
+    rgba(16, 185, 129, 0.25),
+    rgba(5, 150, 105, 0.15)
+  );
+}
+
+.stats-card.purple {
+  background: linear-gradient(135deg,
+    rgba(139, 92, 246, 0.25),
+    rgba(124, 58, 237, 0.15)
+  );
+}
+
+.stats-card.indigo {
+  background: linear-gradient(135deg,
+    rgba(102, 126, 234, 0.25),
+    rgba(118, 75, 162, 0.15)
+  );
+}
+
 
 .stats-icon {
   width: 4rem;
@@ -148,4 +166,9 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.stats-card {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }

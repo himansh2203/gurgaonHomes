@@ -1,106 +1,111 @@
-.about-page{ padding:28px 0; }
-.about-hero h1{ margin:0 0 8px 0; font-size:28px; }
-.about-hero .lead{ color:#6b7280; margin-bottom:18px; }
-.about-content h3{ margin-top:18px; }
-.about-content p{ color:#374151; line-height:1.6 }
-/* Container */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap");
+
 .about-page {
-  max-width: 1100px;
-  margin: auto;
-  padding: 40px 20px;
+  padding: 80px 20px;
   font-family: "Poppins", sans-serif;
-  color: #222;
+  color: #111;
 }
 
-/* Hero Section */
+/* HERO SECTION */
 .about-hero {
   text-align: center;
-  margin-bottom: 40px;
+  padding: 100px 40px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #f7f6f5, #d8d6d0, #ffd700);
+  background-size: 200% 200%;
+  animation: gradientMove 6s ease infinite;
+  box-shadow: 0 30px 60px rgba(233, 231, 227, 0.45);
+  color: #111;
 }
 
 .about-hero h1 {
-  font-size: 2.5rem;
+  font-family: "Playfair Display", serif;
+  font-size: 3.5rem;
   font-weight: 700;
-  color: #0d6efd;
+  letter-spacing: 2px;
 }
 
 .about-hero .lead {
-  font-size: 1.1rem;
-  margin-top: 10px;
-  color: #555;
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 15px auto 0;
+  font-weight: 500;
 }
 
-/* Content Section */
+/* CONTENT GLASS CARD */
 .about-content {
-  background: #f9f9f9;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  margin-top: 70px;
+  padding: 50px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
 .about-content h3 {
-  font-size: 1.4rem;
-  margin-top: 20px;
-  color: #0d6efd;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #cfa300;
+  margin-bottom: 12px;
 }
 
 .about-content p {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #444;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 30px;
 }
 
-/* List Styling */
-.about-content ul {
-  margin-top: 15px;
-  padding-left: 20px;
+/* FEATURE CARDS */
+.about-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
 }
 
-.about-content li {
-  font-size: 1rem;
-  margin-bottom: 8px;
-  color: #333;
-  position: relative;
+.about-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
 }
 
-/* Custom bullet */
-.about-content li::before {
-  content: "✔";
-  color: #0d6efd;
-  font-weight: bold;
-  margin-right: 8px;
+.about-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(255, 183, 0, 0.3);
 }
 
-/* ================= MOBILE RESPONSIVE ================= */
+.about-card svg {
+  font-size: 2.2rem;
+  color: #ffb800;
+  margin-bottom: 10px;
+}
+
+.about-card h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.about-card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Gradient Animation */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .about-hero h1 {
-    font-size: 2rem;
-  }
-
-  .about-hero .lead {
-    font-size: 1rem;
+    font-size: 2.3rem;
   }
 
   .about-content {
-    padding: 20px;
-  }
-
-  .about-content h3 {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .about-page {
-    padding: 20px 10px;
-  }
-
-  .about-hero h1 {
-    font-size: 1.6rem;
-  }
-
-  .about-content p,
-  .about-content li {
-    font-size: 0.95rem;
+    padding: 30px;
   }
 }

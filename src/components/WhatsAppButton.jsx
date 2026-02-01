@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/WhatsApp.css";
 
 // Edit the number below (country code + number, no + sign) to your WhatsApp number
-export const WHATSAPP_NUMBER = "919711155417";
+export const WHATSAPP_NUMBER = "919718069177";
 
 export default function WhatsAppButton({
   message = "Hi, I'm interested in a property",

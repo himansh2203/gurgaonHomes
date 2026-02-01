@@ -43,8 +43,8 @@ export default function Hero({ searchValue, onSearchChange, propertiesCount }) {
           Premium Properties<span className="highlight"></span>
         </h1>
         <p className="hero-subtitle">
-          Discover exclusive curated properties across Gurgaon&apos;s most
-          desirable locations
+          Discover exclusive curated properties across Gurgaon's most desirable
+          locations
         </p>
 
         <SearchBar

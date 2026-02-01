@@ -10,17 +10,10 @@ const Footer = () => {
       <div className="gh-footer-inner">
         <div className="gh-col gh-brand">
           <div className="gh-logo-row">
-            <div className="gh-logo-badge" aria-hidden>
-              <svg viewBox="0 0 24 24" width="32" height="32" aria-hidden>
-                <rect
-                  x="3"
-                  y="7"
-                  width="18"
-                  height="10"
-                  rx="2"
-                  fill="var(--gold)"
-                />
-              </svg>
+            <div className="gh-logo-badge" aria-hidden src="/logo.ico">
+              <Link to="/" className="gh-logo">
+                <img src="/logo.ico" alt="Gurgaon Homes Logo" />
+              </Link>
             </div>
             <div>
               <div className="gh-title">Gurgaon Homes</div>
@@ -65,7 +58,9 @@ const Footer = () => {
                 <FiMail className="icon" />
               </span>
               <span className="contact-text">
-                <a href="mailto:info@gurgaonhomes.example">info@gurgaonhomes.example</a>
+                <a href="mailto:info@gurgaonhomes.example">
+                  info@gurgaonhomes.example
+                </a>
               </span>
             </div>
           </address>
@@ -111,32 +106,14 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* <div className="gh-footer-links-row">
-        <nav className="policy-nav" aria-label="Legal">
-          <Link to="/privacy">Privacy Policy</Link>
-          <Link to="/terms">Terms & Conditions</Link>
-          <Link to="/cookie">Cookie Policy</Link>
-          <Link to="/disclaimer">Disclaimer</Link>
-        </nav>
-      </div> */}
-
       <div className="gh-footer-bottom">
         <div className="gh-copy-left">
           <div className="gh-logo-badge small" aria-hidden>
-            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden>
-              <rect
-                x="3"
-                y="7"
-                width="18"
-                height="10"
-                rx="2"
-                fill="var(--gold)"
-              />
-            </svg>
+            <Link to="/" className="gh-logo">
+              <img src="/logo.ico" alt="Gurgaon Homes Logo" />
+            </Link>
           </div>
-          <div>
-            © {new Date().getFullYear()} Gurgaon Homes. All Rights Reserved.
-          </div>
+          <div>© 2026 Gurgaon Homes. All Rights Reserved.</div>
         </div>
 
         <div className="gh-copy-right">
