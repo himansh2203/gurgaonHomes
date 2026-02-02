@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./Admin.css";
-import { Lock, Home, Bell, LogOut, Plus, Search, Filter } from "lucide-react";
+import { Lock, Home, Bell, LogOut, Plus, Search, Filter, Menu, X } from "lucide-react";
 import AddPropertyTab from "./components/AddPropertyTab";
 import Toast from "../components/Toast"; // Import Toast
 import { propertyService, SERVER_ORIGIN } from "../services/api";
@@ -26,6 +26,7 @@ export default function Admin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterCategory, setFilterCategory] = useState("all");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [data, setData] = useState({
     title: "",
     category: "house",
@@ -178,33 +179,59 @@ export default function Admin() {
   return (
     <div className="admin-layout">
       <header className="topbar">
-        <div className="brand">
-          <Home size={24} /> EstateAdmin Pro{" "}
-          <span className="live-indicator">● LIVE</span>
+        <div className="topbar-left">
+          <button
+            className="hamburger-btn"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+          <div className="brand">
+            <Home size={24} /> EstateAdmin Pro{" "}
+            <span className="live-indicator">● LIVE</span>
+          </div>
         </div>
         <div className="header-actions">
           <Bell size={20} />
           <button onClick={() => setIsLoggedIn(false)} className="logout-btn">
-            <LogOut size={18} /> Logout
+            <LogOut size={18} /> <span className="logout-text">Logout</span>
           </button>
         </div>
       </header>
 
-      <aside className="sidebar">
+      {/* Mobile overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="mobile-overlay"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      <aside className={`sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <button
-          onClick={() => setActiveTab("dashboard")}
+          onClick={() => {
+            setActiveTab("dashboard");
+            setMobileMenuOpen(false);
+          }}
           className={activeTab === "dashboard" ? "active" : ""}
         >
           📊 Dashboard
         </button>
         <button
-          onClick={() => setActiveTab("properties")}
+          onClick={() => {
+            setActiveTab("properties");
+            setMobileMenuOpen(false);
+          }}
           className={activeTab === "properties" ? "active" : ""}
         >
           🏠 Properties ({filteredProperties.length})
         </button>
         <button
-          onClick={() => setActiveTab("add")}
+          onClick={() => {
+            setActiveTab("add");
+            setMobileMenuOpen(false);
+          }}
           className={activeTab === "add" ? "active" : ""}
         >
           ➕ Add Property
